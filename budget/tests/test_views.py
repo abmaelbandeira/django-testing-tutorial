@@ -38,6 +38,23 @@ class TestViews(TestCase):
         self.assertTemplateUsed(response, 'budget/add-project.html')
 
 
+    def test_project_create_view_POST(self):
+        response = self.client.post(self.add_url, {
+            'name': 'project2',
+            'budget': 10000,
+            'categoriesString': 'design,development'
+        })
+
+        project2 = Project.objects.get(id=2)
+        self.assertEquals(project2.name, 'project2')
+        first_category = Category.objects.get(id=1)
+        self.assertEquals(first_category.project, project2)
+        self.assertEquals(first_category.name, 'design')
+        second_category = Category.objects.get(id=2)
+        self.assertEquals(second_category.project, project2)
+        self.assertEquals(second_category.name, 'development')
+
+
     def test_project_detail_view_retorna_status_correto_GET(self):
         response = self.client.get(self.detail_url)
         self.assertEquals(response.status_code, 200)
