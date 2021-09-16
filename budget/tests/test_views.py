@@ -88,3 +88,21 @@ class TestViews(TestCase):
 
         self.assertEquals(response.status_code, 204)
         self.assertEquals(self.project1.expenses.count(), 0)
+
+
+    def test_project_detail_DELETE_no_id(self):
+        category1 = Category.objects.create(
+            project=self.project1,
+            name='development'
+        )
+        Expense.objects.create(
+            project=self.project1,
+            title='expense1',
+            amount=1000,
+            category=category1
+        )
+
+        response = self.client.delete(self.detail_url)
+
+        self.assertEquals(response.status_code, 404)
+        self.assertEquals(self.project1.expenses.count(), 1)
