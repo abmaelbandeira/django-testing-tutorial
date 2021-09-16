@@ -9,11 +9,6 @@ class TestModels(TestCase):
             name='Project 1',
             budget=10000
         )
-
-    def test_project_atribui_slug_no_create(self):
-        self.assertEquals(self.project1.slug, 'project-1')
-
-    def test_project_budget_left(self):
         category1 = Category.objects.create(
             project=self.project1,
             name='development'
@@ -31,4 +26,11 @@ class TestModels(TestCase):
             category=category1
         )
 
+    def test_project_atribui_slug_no_create(self):
+        self.assertEquals(self.project1.slug, 'project-1')
+
+    def test_project_budget_left(self):
         self.assertEquals(self.project1.budget_left, 7000)
+
+    def test_project_total_transactions(self):
+        self.assertEquals(self.project1.total_transactions, 2)
